@@ -148,13 +148,15 @@
         }
 
         /* Tooltip Styles */
-        .task-item {
+        .task-item,
+        .fixed-item {
             position: relative;
             cursor: pointer;
             transition: background-color 0.2s;
         }
 
-        .task-item:hover {
+        .task-item:hover,
+        .fixed-item:hover {
             background-color: rgba(0, 0, 0, 0.02);
             border-radius: 6px;
         }
@@ -192,7 +194,8 @@
             border-color: #1f2937 transparent transparent transparent;
         }
 
-        .task-item:hover .task-tooltip {
+        .task-item:hover .task-tooltip,
+        .fixed-item:hover .task-tooltip {
             visibility: visible;
             opacity: 1;
             transform: translateY(0);
@@ -327,6 +330,13 @@
             <div class="fixed-item">
                 <span class="time-badge">09:30–10:00</span>
                 <span>Zoho Desk Acil Ticket</span>
+                <div class="task-tooltip">
+                    <span class="tooltip-title">Bugün yapılanlar</span>
+                    <ul class="progress-list">
+                        <li>Kontrol yapıldı</li>
+                        <li>Acil ticket'lar cevaplandı</li>
+                    </ul>
+                </div>
             </div>
             <div class="fixed-item">
                 <span class="time-badge">13:30–13:45</span>
@@ -352,11 +362,12 @@
                             <span class="task-time">10:00 – 11:30</span>
                             <span class="task-desc">Haftalık task list / öncelik / hedef</span>
                             <div class="task-tooltip">
-                                <span class="tooltip-title">İlerleme Durumu</span>
+                                <span class="tooltip-title">Haftalık Hedefler</span>
                                 <ul class="progress-list">
-                                    <li>Önceki haftanın analizi yapıldı</li>
-                                    <li>Yeni hedefler belirlendi</li>
-                                    <li>Öncelik sıralaması güncellendi</li>
+                                    <li>1 haftalık sosyal medya içerik hazırlığı</li>
+                                    <li>Kategori görünümlerini güncelle (Audio gibi)</li>
+                                    <li>14 Şubat özel görünümlerini tamamla (Shopify)</li>
+                                    <li>Erkan'dan süreç/kargo bilgisi al (askerlik öncesi)</li>
                                 </ul>
                             </div>
                         </li>
