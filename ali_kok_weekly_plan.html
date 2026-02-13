@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Kök - Haftalık Çalışma Planı</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f59e0b;
+            --accent-rose: #f43f5e;
+            --fixed-header-bg: #111827;
+        }
+
+        .mobile-nav {
+            display: none;
+            /* Hidden on desktop */
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0.3cm;
+            }
+
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                padding: 0.3cm !important;
+                font-size: 85%;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            header {
+                margin-bottom: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+
+            h1 {
+                font-size: 1.3rem !important;
+            }
+
+            .subtitle {
+                font-size: 0.75rem !important;
+            }
+
+            .fixed-schedule {
+                padding: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+                gap: 0.8rem !important;
+                font-size: 0.7rem !important;
+            }
+
+            .time-badge {
+                font-size: 0.65rem !important;
+                padding: 0.15rem 0.5rem !important;
+            }
+
+            .week-grid {
+                gap: 0.5rem !important;
+            }
+
+            .day-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .day-header {
+                padding: 0.4rem !important;
+                font-size: 0.75rem !important;
+            }
+
+            .day-header span {
+                font-size: 0.65rem !important;
+            }
+
+            .day-content {
+                padding: 0.6rem !important;
+            }
+
+            .task-item {
+                margin-bottom: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+
+            .task-time {
+                font-size: 0.65rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .task-desc {
+                font-size: 0.7rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .day-footer {
+                padding: 0.4rem 0.6rem !important;
+            }
+
+            .output-label {
+                font-size: 0.55rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            .output-text {
+                font-size: 0.65rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Fixed Schedule Section */
+        .fixed-schedule {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 2rem;
+            border-left: 5px solid var(--fixed-header-bg);
+        }
+
+        .fixed-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .time-badge {
+            background-color: var(--fixed-header-bg);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        /* Grid Layout */
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+        }
+
+        .day-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-header {
+            padding: 1rem;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .day-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .task-time {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .task-desc {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .day-footer {
+            background-color: #f9fafb;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .output-label {
+            display: block;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            font-weight: 700;
+        }
+
+        .output-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Day Specific Colors */
+        .monday .day-header {
+            background-color: var(--accent-blue);
+        }
+
+        .tuesday .day-header {
+            background-color: var(--accent-green);
+        }
+
+        .wednesday .day-header {
+            background-color: var(--accent-purple);
+        }
+
+        .thursday .day-header {
+            background-color: var(--accent-orange);
+        }
+
+        .friday .day-header {
+            background-color: var(--accent-rose);
+        }
+
+        .monday {
+            border-top: 4px solid var(--accent-blue);
+        }
+
+        .tuesday {
+            border-top: 4px solid var(--accent-green);
+        }
+
+        .wednesday {
+            border-top: 4px solid var(--accent-purple);
+        }
+
+        .thursday {
+            border-top: 4px solid var(--accent-orange);
+        }
+
+        .friday {
+            border-top: 4px solid var(--accent-rose);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .week-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 1rem;
+            }
+
+            .week-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .fixed-schedule {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .fixed-item {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            /* Single column layout on mobile */
+            .week-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .fixed-schedule {
+                padding: 0.875rem;
+                gap: 0.75rem;
+            }
+
+            .time-badge {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+            }
+
+            .day-header {
+                padding: 0.75rem;
+                font-size: 0.95rem;
+            }
+
+            .day-content {
+                padding: 1rem;
+            }
+
+            .task-time {
+                font-size: 0.8rem;
+            }
+
+            .task-desc {
+                font-size: 0.9rem;
+            }
+
+            .day-footer {
+                padding: 0.75rem 1rem;
+            }
+
+            .output-label {
+                font-size: 0.65rem;
+            }
+
+            .output-text {
+                font-size: 0.85rem;
+            }
+
+            .fixed-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+
+            /* Mobile Day Navigation */
+            .week-grid {
+                display: none;
+                /* Hide grid by default on mobile, show active day via JS */
+            }
+
+            .week-grid.mobile-active {
+                display: block;
+            }
+
+            .day-card {
+                display: none;
+                /* Hide all day cards on mobile */
+                height: auto !important;
+                /* Let height be natural on mobile */
+            }
+
+            .day-card.active {
+                display: flex;
+                /* Show only active day card */
+                animation: fadeIn 0.3s ease-in-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                padding: 0.5rem;
+                justify-content: space-around;
+                z-index: 1000;
+                padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+            }
+
+            .nav-btn {
+                background: none;
+                border: none;
+                padding: 0.5rem;
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: var(--text-secondary);
+                border-radius: 8px;
+                cursor: pointer;
+                flex: 1;
+                text-align: center;
+            }
+
+            .nav-btn.active {
+                background-color: var(--accent-blue);
+                color: white;
+            }
+
+            /* Specific active colors for nav buttons based on day */
+            .nav-btn[data-day="monday"].active {
+                background-color: var(--accent-blue);
+            }
+
+            .nav-btn[data-day="tuesday"].active {
+                background-color: var(--accent-green);
+            }
+
+            .nav-btn[data-day="wednesday"].active {
+                background-color: var(--accent-purple);
+            }
+
+            .nav-btn[data-day="thursday"].active {
+                background-color: var(--accent-orange);
+            }
+
+            .nav-btn[data-day="friday"].active {
+                background-color: var(--accent-rose);
+            }
+
+            body {
+                padding-bottom: 80px;
+                /* Space for fixed nav */
+            }
+        }
+
+        /* Desktop styles remain same, but ensure footer alignment */
+        .day-footer {
+            margin-top: auto;
+            /* Push footer to bottom */
+            min-height: 80px;
+            /* Ensure minimum height for alignment */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <h1>Ali Kök</h1>
+                <div class="subtitle">Haftalık Çalışma ve İçerik Planı</div>
+            </div>
+            <div class="subtitle" style="text-align: right;">
+                2026<br>Q1
+            </div>
+        </header>
+
+        <!-- Daily Fixed Routine -->
+        <div class="fixed-schedule">
+            <div style="font-weight: 700; color: var(--fixed-header-bg); align-self: center; margin-right: 1rem;">
+                HER GÜN SABİT
+            </div>
+            <div class="fixed-item">
+                <span class="time-badge">09:00–09:30</span>
+                <span>İK & LinkedIn (İş İlanı, Başvuru Kontrol, Mülakat Org.)</span>
+            </div>
+            <div class="fixed-item">
+                <span class="time-badge">09:30–10:00</span>
+                <span>Müşteri Hizmetleri (Zoho Desk + Bestbuy CS Kontrol)</span>
+            </div>
+            <div class="fixed-item">
+                <span class="time-badge">13:30–14:00</span>
+                <span>Depo İade & Değişim Süreçleri (Nedim Bey ile Aksiyonlar)</span>
+            </div>
+            <div class="fixed-item">
+                <span class="time-badge">17:45–18:00</span>
+                <span>Gün Sonu CS Kontrol (Zoho/Bestbuy)</span>
+            </div>
+        </div>
+
+        <div class="week-grid">
+
+            <!-- Monday -->
+            <div class="day-card monday">
+                <div class="day-header">
+                    PAZARTESİ<br>
+                    <span style="font-weight: 400; font-size: 0.9em; opacity: 0.9;">Haftalık Strateji + Marketing
+                        Focus</span>
+                </div>
+                <div class="day-content">
+                    <li class="task-item">
+                        <span class="task-time">10:00 – 12:30</span>
+                        <span class="task-desc">Haftalık Strateji & Ürün Seçimi (Content Plan İçin)</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-time">13:30 – 16:30</span>
+                        <span class="task-desc">Content Üretimi: Video/Görsel (Instagram, FB, Pinterest) - Pazartesi
+                            Focus</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-time">16:30 – 17:45</span>
+                        <span class="task-desc">Haftalık Content Brief Oluşturma & Planlama</span>
+                    </li>
+                    </ul>
+                </div>
+                <div class="day-footer">
+                    <span class="output-label">Günün Çıktısı</span>
+                    <span class="output-text">Örnek Şablonlar + Benchmarklar + Hazırlanan İçerikler</span>
+                </div>
+            </div>
+
+            <!-- Tuesday -->
+            <div class="day-card tuesday">
+                <div class="day-header">
+                    SALI<br>
+                    <span style="font-weight: 400; font-size: 0.9em; opacity: 0.9;">Shopify Tema Geliştirme</span>
+                </div>
+                <div class="day-content">
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <span class="task-time">10:00 – 13:00</span>
+                            <span class="task-desc">Content Üretimi: Video Edit / Görsel Tasarım</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">14:00 – 16:00</span>
+                            <span class="task-desc">Shopify Tema: Audit & Bug Fixleri</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">16:00 – 17:45</span>
+                            <span class="task-desc">Tema Geliştirme: Yeni Özellik Ekleme (Liquid/JS)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="day-footer">
+                    <span class="output-label">Günün Çıktısı</span>
+                    <span class="output-text">Hazırlanan İçerikler + Tema Geliştirmeleri & Fix Raporu</span>
+                </div>
+            </div>
+
+            <!-- Wednesday -->
+            <div class="day-card wednesday">
+                <div class="day-header">
+                    ÇARŞAMBA<br>
+                    <span style="font-weight: 400; font-size: 0.9em; opacity: 0.9;">Feed Kalite Yükseltme</span>
+                </div>
+                <div class="day-content">
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <span class="task-time">10:00 – 13:00</span>
+                            <span class="task-desc">Content Üretimi: Video Edit / Görsel Tasarım</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">14:00 – 16:30</span>
+                            <span class="task-desc">Tüm Platformlar Feed Kontrolü (Google, Facebook, Instagram,
+                                Pinterest)</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">16:30 – 17:45</span>
+                            <span class="task-desc">Feed Kalite Puanı Artırma & Eksik Veri Tamamlama</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="day-footer">
+                    <span class="output-label">Günün Çıktısı</span>
+                    <span class="output-text">Hazırlanan İçerikler + Feed Skor Artışı + Veri İyileştirmeleri</span>
+                </div>
+            </div>
+
+            <!-- Thursday -->
+            <div class="day-card thursday">
+                <div class="day-header">
+                    PERŞEMBE<br>
+                    <span style="font-weight: 400; font-size: 0.9em; opacity: 0.9;">Marketing Execution &
+                        Optimizasyon</span>
+                </div>
+                <div class="day-content">
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <span class="task-time">10:00 – 13:00</span>
+                            <span class="task-desc">Content Üretimi: Video Edit / Görsel Tasarım</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">14:00 – 16:00</span>
+                            <span class="task-desc">Rakip Content Analizi & Trend Takibi</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">16:00 – 17:45</span>
+                            <span class="task-desc">Viral Video Fikirleri & Template Arşivi Oluşturma</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="day-footer">
+                    <span class="output-label">Günün Çıktısı</span>
+                    <span class="output-text">Hazırlanan İçerikler + Rakip & Trend Analiz Raporu</span>
+                </div>
+            </div>
+
+            <!-- Friday -->
+            <div class="day-card friday">
+                <div class="day-header">
+                    CUMA<br>
+                    <span style="font-weight: 400; font-size: 0.9em; opacity: 0.9;">App + Agent + Rapor</span>
+                </div>
+                <div class="day-content">
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <span class="task-time">10:00 – 13:00</span>
+                            <span class="task-desc">Content Üretimi: Video Edit / Görsel Tasarım</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">14:00 – 16:30</span>
+                            <span class="task-desc">App Geliştirme & Yeni Fikirler (Shopify/Zoho)</span>
+                        </li>
+                        <li class="task-item">
+                            <span class="task-time">16:30 – 17:45</span>
+                            <span class="task-desc">AI Agent Ar-Ge & Haftalık Raporlama</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="day-footer">
+                    <span class="output-label">Günün Çıktısı</span>
+                    <span class="output-text">Hazırlanan İçerikler + App/Agent Gelişmeleri + Haftalık Rapor</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <nav class="mobile-nav">
+        <button class="nav-btn active" data-day="monday" onclick="showDay('monday')">Pzt</button>
+        <button class="nav-btn" data-day="tuesday" onclick="showDay('tuesday')">Sal</button>
+        <button class="nav-btn" data-day="wednesday" onclick="showDay('wednesday')">Çar</button>
+        <button class="nav-btn" data-day="thursday" onclick="showDay('thursday')">Per</button>
+        <button class="nav-btn" data-day="friday" onclick="showDay('friday')">Cum</button>
+    </nav>
+
+    <script>
+        function showDay(dayClass) {
+            // Hide all cards
+            document.querySelectorAll('.day-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Show selected card
+            const selected = document.querySelector('.day-card.' + dayClass);
+            if (selected) selected.classList.add('active');
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('.nav-btn[data-day="' + dayClass + '"]').classList.add('active');
+        }
+
+        // Initialize mobile view
+        if (window.innerWidth <= 600) {
+            // Ensure first day is shown
+            document.querySelector('.day-card.monday').classList.add('active');
+            document.querySelector('.week-grid').classList.add('mobile-active');
+        }
+    </script>
+</body>
+
+</html>
